@@ -18,7 +18,7 @@ namespace Harbour.RedisSessionStateStore
     /// A SessionStateProvider implementation for Redis using the ServiceStack.Redis client.
     /// </summary>
     /// <example>
-    /// In your web.config (with the <code>host</code> and <code>clientType</code>
+    /// In your web.config (with the <code>host</code>, <code>db</code> and <code>clientType</code>
     /// attributes being optional):
     /// <code>
     /// <![CDATA[
@@ -28,7 +28,7 @@ namespace Harbour.RedisSessionStateStore
     ///         <clear />
     ///         <add name="RedisSessionStateProvider" 
     ///              type="Harbour.RedisSessionStateStore.RedisSessionStateStoreProvider" 
-    ///              host="localhost:6379" clientType="pooled" />
+    ///              host="localhost:6379" db="0" clientType="pooled" />
     ///       </providers>
     ///     </sessionState>
     ///   </system.web>
@@ -119,7 +119,7 @@ namespace Harbour.RedisSessionStateStore
         {
             options = null;
         }
-        
+
         public override void Initialize(string name, NameValueCollection config)
         {
             if (String.IsNullOrWhiteSpace(name))
@@ -128,7 +128,7 @@ namespace Harbour.RedisSessionStateStore
             }
 
             this.name = name;
-            
+
             lock (locker)
             {
                 if (options == null)
@@ -140,8 +140,9 @@ namespace Harbour.RedisSessionStateStore
                 {
                     var host = config["host"];
                     var clientType = config["clientType"];
+                    var db = config["db"];
 
-                    clientManager = CreateClientManager(clientType, host);
+                    clientManager = CreateClientManager(clientType, host, db);
                     manageClientManagerLifetime = true;
                 }
                 else
@@ -154,8 +155,13 @@ namespace Harbour.RedisSessionStateStore
             base.Initialize(name, config);
         }
 
-        private IRedisClientsManager CreateClientManager(string clientType, string host)
+        private IRedisClientsManager CreateClientManager(string clientType, string host, string db)
         {
+            if (string.IsNullOrWhiteSpace(db))
+            {
+                db = "0";
+            }
+
             if (String.IsNullOrWhiteSpace(host))
             {
                 host = "localhost:6379";
@@ -166,21 +172,27 @@ namespace Harbour.RedisSessionStateStore
                 clientType = "POOLED";
             }
 
+            var _db = long.Parse(db);
             if (clientType.ToUpper() == "POOLED")
             {
-                return new PooledRedisClientManager(host);
+                return new PooledRedisClientManager(_db, host);
             }
             else
             {
-                return new BasicRedisClientManager(host);
+                return new BasicRedisClientManager(_db, host);
             }
+        }
+
+        private IRedisClientsManager CreateClientManager(string clientType, string host)
+        {
+            return CreateClientManager(clientType, host, null);
         }
 
         private IRedisClient GetClient()
         {
             return clientManager.GetClient();
         }
-        
+
         /// <summary>
         /// Create a distributed lock for cases where more-than-a-transaction
         /// is used but we need to prevent another request from modifying the
@@ -195,8 +207,8 @@ namespace Harbour.RedisSessionStateStore
         {
             var lockKey = key + options.KeySeparator + "lock";
             return new DisposableDistributedLock(
-                client, lockKey, 
-                options.DistributedLockAcquisitionTimeoutSeconds.Value, 
+                client, lockKey,
+                options.DistributedLockAcquisitionTimeoutSeconds.Value,
                 options.DistributedLockTimeoutSeconds.Value
             );
         }
@@ -230,12 +242,12 @@ namespace Harbour.RedisSessionStateStore
 
         public override void InitializeRequest(HttpContext context)
         {
-            
+
         }
 
         public override void EndRequest(HttpContext context)
         {
-            
+
         }
 
         private void UseTransaction(IRedisClient client, Action<IRedisTransaction> action)
