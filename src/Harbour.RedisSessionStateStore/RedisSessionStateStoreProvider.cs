@@ -172,7 +172,7 @@ namespace Harbour.RedisSessionStateStore
                 clientType = "POOLED";
             }
 
-            var _db = long.Parse(db);
+            var _db = int.Parse(db);
             if (clientType.ToUpper() == "POOLED")
             {
                 return new PooledRedisClientManager(_db, host);
