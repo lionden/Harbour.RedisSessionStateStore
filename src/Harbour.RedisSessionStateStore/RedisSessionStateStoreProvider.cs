@@ -43,7 +43,7 @@ namespace Harbour.RedisSessionStateStore
     ///   protected void Application_Start()
     ///   {
     ///       // Or use your IoC container to wire this up.
-    ///       clientManager = new PooledRedisClientManager("localhost:6379");
+    ///       clientManager = new PooledRedisClientManager(6, "localhost:6379");
     ///       RedisSessionStateStoreProvider.SetClientManager(clientManager);
     ///   }
     ///  
