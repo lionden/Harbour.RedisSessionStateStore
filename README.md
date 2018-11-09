@@ -22,7 +22,7 @@ Configure your `web.config` to use the session state provider:
       <clear />
       <add name="RedisSessionStateProvider" 
            type="Harbour.RedisSessionStateStore.RedisSessionStateStoreProvider" 
-           host="localhost:6379" clientType="pooled" />
+           host="localhost:6379" db="6" clientType="pooled" />
     </providers>
   </sessionState>
 </system.web>
@@ -43,7 +43,7 @@ private IRedisClientsManager clientManager;
 protected void Application_Start()
 {
     // Or use your IoC container to wire this up.
-    this.clientManager = new PooledRedisClientManager("localhost:6379");
+    this.clientManager = new PooledRedisClientManager(6, "localhost:6379");
     RedisSessionStateStoreProvider.SetClientManager(this.clientManager);
 
     // Configure options on the provider.
@@ -67,6 +67,9 @@ protected void Application_End()
 
 Changelog
 ---------
+
+### v1.5.0
+- Support pointing a special database.
 
 ### v1.4.0
 - Use the `HttpContext.Session.Timeout` instead of the timeout from the `web.config`
