@@ -32,21 +32,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Moq">
-      <HintPath>..\..\lib\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+      <HintPath>..\..\src\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Common, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\ServiceStack.Common.3.9.71\lib\net35\ServiceStack.Common.dll</HintPath>
+      <HintPath>..\..\src\packages\ServiceStack.Common.3.9.71\lib\net35\ServiceStack.Common.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\ServiceStack.Common.3.9.71\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+      <HintPath>..\..\src\packages\ServiceStack.Common.3.9.71\lib\net35\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Redis">
-      <HintPath>..\..\lib\ServiceStack.Redis.3.9.71\lib\net35\ServiceStack.Redis.dll</HintPath>
+      <HintPath>..\..\src\packages\ServiceStack.Redis.3.9.71\lib\net35\ServiceStack.Redis.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Text">
-      <HintPath>..\..\lib\ServiceStack.Text.3.9.71\lib\net35\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\..\src\packages\ServiceStack.Text.3.9.71\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -58,10 +58,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="xunit">
-      <HintPath>..\..\lib\xunit.1.9.0.1566\lib\xunit.dll</HintPath>
+      <HintPath>..\..\src\packages\xunit.1.9.0.1566\lib\xunit.dll</HintPath>
     </Reference>
     <Reference Include="xunit.extensions">
-      <HintPath>..\..\lib\xunit.extensions.1.9.0.1566\lib\xunit.extensions.dll</HintPath>
+      <HintPath>..\..\src\packages\xunit.extensions.1.9.0.1566\lib\xunit.extensions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
